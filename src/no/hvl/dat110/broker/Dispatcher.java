@@ -111,9 +111,9 @@ public class Dispatcher extends Stopable {
 		Logger.log("onCreateTopic:" + msg.toString());
 
 		// TODO: create the topic in the broker storage
+		
+		storage.createTopic(msg.getTopic());
 		// the topic is contained in the create topic message
-
-		throw new UnsupportedOperationException(TODO.method());
 
 	}
 
@@ -122,9 +122,8 @@ public class Dispatcher extends Stopable {
 		Logger.log("onDeleteTopic:" + msg.toString());
 
 		// TODO: delete the topic from the broker storage
+		storage.deleteTopic(msg.getTopic());
 		// the topic is contained in the delete topic message
-		
-		throw new UnsupportedOperationException(TODO.method());
 	}
 
 	public void onSubscribe(SubscribeMsg msg) {
@@ -132,9 +131,8 @@ public class Dispatcher extends Stopable {
 		Logger.log("onSubscribe:" + msg.toString());
 
 		// TODO: subscribe user to the topic
+		storage.addSubscriber(msg.getUser(), msg.getTopic());
 		// user and topic is contained in the subscribe message
-		
-		throw new UnsupportedOperationException(TODO.method());
 
 	}
 
@@ -143,9 +141,8 @@ public class Dispatcher extends Stopable {
 		Logger.log("onUnsubscribe:" + msg.toString());
 
 		// TODO: unsubscribe user to the topic
+		storage.removeSubscriber(msg.getUser(), msg.getTopic());
 		// user and topic is contained in the unsubscribe message
-		
-		throw new UnsupportedOperationException(TODO.method());
 	}
 
 	public void onPublish(PublishMsg msg) {
@@ -153,10 +150,14 @@ public class Dispatcher extends Stopable {
 		Logger.log("onPublish:" + msg.toString());
 
 		// TODO: publish the message to clients subscribed to the topic
+		Set<String> users = storage.getSubscribers(msg.getTopic());
 		// topic and message is contained in the subscribe message
+		for (String user : users) {
+			storage.getSession(user).send(msg);
+		}
 		// messages must be sent used the corresponding client session objects
 		
-		throw new UnsupportedOperationException(TODO.method());
-
+		// Blir det rett å sende hele meldingen egentlig?
+		// Vi har jo ikke brukt JSON? altså, funker jo uten?
 	}
 }
