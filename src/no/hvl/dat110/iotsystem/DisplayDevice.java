@@ -26,8 +26,8 @@ public class DisplayDevice {
 		c.subscribe(Common.TEMPTOPIC);
 		// - receive messages on the topic
 		for (int i = 0; i < COUNT; i++) {
-			Message msg = c.receive();
-			System.out.println(msg);
+			PublishMsg msg = (PublishMsg) c.receive();
+			System.out.println("DISPLAY: " + msg.getMessage());
 		}
 		
 		System.out.println("Display stopping ... ");

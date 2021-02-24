@@ -24,7 +24,13 @@ public class TemperatureDevice {
 		// - publish the temperature(s)
 		for (int i = 0; i < COUNT; i++) {
 			int temp = sn.read();
+			System.out.println("READING: " + temp);
 			c.publish(Common.TEMPTOPIC, ""+temp);
+			try {
+				Thread.sleep(4500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
