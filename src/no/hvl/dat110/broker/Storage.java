@@ -1,10 +1,12 @@
 package no.hvl.dat110.broker;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import no.hvl.dat110.common.Logger;
 import no.hvl.dat110.messagetransport.Connection;
 
 public class Storage {
@@ -51,38 +53,50 @@ public class Storage {
 
 	public void addClientSession(String user, Connection connection) {
 		// TODO: add corresponding client session to the storage
-		clients.put(user, new ClientSession(user, connection));
+		clients.putIfAbsent(user, new ClientSession(user, connection));
+		Logger.log("Client sessions : " + clients.size());
 
 	}
 
 	public void removeClientSession(String user) {
 		// TODO: remove client session for user from the storage
+		clients.get(user).disconnect();
 		clients.remove(user);
-		// Fjerne på subscriptions og?
+		
+		// fjern fra subscriptions
+		Enumeration<String> keys = subscriptions.keys();
+		while (keys.hasMoreElements()) {
+			String topic = keys.nextElement();
+			subscriptions.get(topic).removeIf(u -> u.equals(user));
+		}
+		Logger.log("Client sessions : " + clients.size());
 
 	}
 
 	public void createTopic(String topic) {
 		// TODO: create topic in the storage
 		subscriptions.putIfAbsent(topic, new HashSet<String>());
+		Logger.log("Topic : " + subscriptions.size());
 
 	}
 
 	public void deleteTopic(String topic) {
 		// TODO: delete topic from the storage
 		subscriptions.remove(topic);
+		Logger.log("Topic : " + subscriptions.size());
 
 	}
 
 	public void addSubscriber(String user, String topic) {
 		// TODO: add the user as subscriber to the topic
 		subscriptions.get(topic).add(user);
+		Logger.log("Subscribers: " + topic + " : " + subscriptions.get(topic).size());
 
 	}
 
 	public void removeSubscriber(String user, String topic) {
 		// TODO: remove the user as subscriber to the topic
 		subscriptions.get(topic).remove(user);
-
+		Logger.log("Subscribers: " + topic + " : " + subscriptions.get(topic).size());
 	}
 }
