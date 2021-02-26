@@ -3,7 +3,7 @@ package no.hvl.dat110.messages;
 import no.hvl.dat110.common.TODO;
 
 public class PublishMsg extends Message {
-	private String message; //litt usiker på hvor lange medlinger som skal publishes, kan evntuelt endres -Vilde
+	private String message; //litt usiker pï¿½ hvor lange medlinger som skal publishes, kan evntuelt endres -Vilde
 	private String topic;
 	
 	public PublishMsg(String user, String topic, String message) {
@@ -36,4 +36,11 @@ public class PublishMsg extends Message {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	@Override
+	public String toString() {
+		return "PublishMsg [message=" + message.toString() + "topic=" + topic + "]";
+	}
+	
+	
 }

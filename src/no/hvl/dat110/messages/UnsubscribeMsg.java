@@ -18,7 +18,7 @@ public void setTopic(String topic) {
 
 @Override
 public String toString() {
-	return "UnsubscribeMsg [topic=" + topic + "]";
+	return "UnsubscribeMsg [topic=" + topic + "]" + super.toString();
 }
 
 	// message sent from client to unsubscribe on a topic 

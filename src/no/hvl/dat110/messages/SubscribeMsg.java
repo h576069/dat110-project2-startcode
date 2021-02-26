@@ -18,7 +18,7 @@ public void setTopic(String topic) {
 
 @Override
 public String toString() {
-	return "SubscribeMsg [topic=" + topic + "]";
+	return "SubscribeMsg [topic=" + topic + "]" + super.toString();
 }
 
 	// message sent from client to subscribe on a topic 
