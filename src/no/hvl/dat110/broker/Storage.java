@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import no.hvl.dat110.common.Logger;
+import no.hvl.dat110.messages.Message;
 import no.hvl.dat110.messagetransport.Connection;
 
 public class Storage {
@@ -19,6 +20,7 @@ public class Storage {
 	// maps from user to corresponding client session object
 
 	protected ConcurrentHashMap<String, ClientSession> clients;
+	
 
 	public Storage() {
 		subscriptions = new ConcurrentHashMap<String, Set<String>>();
@@ -69,6 +71,7 @@ public class Storage {
 			String topic = keys.nextElement();
 			subscriptions.get(topic).removeIf(u -> u.equals(user));
 		}
+		// Printer ut antall client sesjoner:
 		Logger.log("Client sessions : " + clients.size());
 
 	}
